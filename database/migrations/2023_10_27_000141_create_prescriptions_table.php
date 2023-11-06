@@ -11,11 +11,11 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up(): void 
     {
         Schema::create('prescriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->nullable(false)->constrained()->cascadeOnUpdate()->cascadeOnDelete();   
+            $table->foreignIdFor(User::class)->nullable(false)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignIdFor(Disease::class)->nullable(false)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('medication_name');
             $table->string('dose_amount');

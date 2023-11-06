@@ -48,4 +48,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Prescription::class);
     }
+
+    public function health()
+    {
+        return $this->hasMany(Health::class);
+    }
+
+    public function routine()
+    {
+        return $this->hasMany(Routine::class);
+    }
 }

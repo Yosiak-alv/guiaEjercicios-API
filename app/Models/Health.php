@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo; 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Prescription extends Model
+class Health extends Model
 {
     use HasFactory;
 
@@ -14,12 +14,7 @@ class Prescription extends Model
 
     public $guarded = ['id'];
 
-    public function disease(): BelongsTo
-    {
-        return $this->belongsTo(Disease::class);
-    }
-
-    public function user(): BelongsTo
+    public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
     }
