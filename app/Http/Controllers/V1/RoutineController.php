@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Routine;
 use Illuminate\Http\Request;
+use App\Http\Resources\V1\RoutineResource;
 
 class RoutineController extends Controller
 {
@@ -12,7 +13,9 @@ class RoutineController extends Controller
      */
     public function index()
     {
-        //
+        return RoutineResource::collection(
+            Routine::where('user_id',request()->user()->id) ->orderByRaw('ABS(UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(next_dose))')->get()
+        );
     }
 
     /**
@@ -28,7 +31,16 @@ class RoutineController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->merge(['user_id' => request()->user()->id]);
+        $attributes = $request->validatedHealth();
+        if(Routine::create($attributes)){
+            return response()->json([
+                'message' => 'Exercise routine added successfully',
+            ]);
+        }               
+        return response()->json([
+            'message' => "An error occurred while adding the routine"
+        ], 500);
     }
 
     /**
@@ -36,7 +48,7 @@ class RoutineController extends Controller
      */
     public function show(Routine $routine)
     {
-        //
+        return new RoutineResource($routine);
     }
 
     /**
@@ -52,7 +64,16 @@ class RoutineController extends Controller
      */
     public function update(Request $request, Routine $routine)
     {
-        //
+        $request->merge(['user_id' => request()->user()->id]);
+        $attributes = $request->validatedHealth();
+        if($routine->update($attributes)){
+            return response()->json([
+                'message' => 'Exercise routine updated successfully',
+            ]);
+        }               
+        return response()->json([
+            'message' => "An error occurred while updating the routine"
+        ], 500);
     }
 
     /**
@@ -60,6 +81,13 @@ class RoutineController extends Controller
      */
     public function destroy(Routine $routine)
     {
-        //
+        if($routine->delete()){
+            return response()->json([
+                'message' => 'routine deleted successfully',
+            ]);
+        }
+        return response()->json([
+            'message' => "An error occurred while deleting the routine"
+        ], 500);
     }
 }

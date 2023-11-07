@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Health;
 use Illuminate\Http\Request;
+use App\Http\Resources\V1\HealthResource;
 
 class HealthController extends Controller
 {
@@ -12,23 +13,28 @@ class HealthController extends Controller
      */
     public function index()
     {
-        //
+        return HealthResource::collection(
+            Health::where('user_id',request()->user()->id) ->orderByRaw('ABS(UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(next_dose))')->get()
+        );    
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+   
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $request->merge(['user_id' => request()->user()->id]);
+        $attributes = $request->validatedHealth();
+        if(Health::create($attributes)){
+            return response()->json([
+                'message' => 'Health Data added successfully',
+            ]);
+        }               
+        return response()->json([
+            'message' => "An error occurred while adding the health"
+        ], 500);
     }
 
     /**
@@ -36,7 +42,7 @@ class HealthController extends Controller
      */
     public function show(Health $health)
     {
-        //
+        return new HealthResource($health->load(['health']));
     }
 
     /**
@@ -52,7 +58,17 @@ class HealthController extends Controller
      */
     public function update(Request $request, Health $health)
     {
-        //
+        $request->merge(['user_id' => request()->user()->id]);
+        $attributes = $request->validatedHealth();
+        $date = new \DateTime($attributes['date']);
+        if($health->update($attributes)){
+            return response()->json([
+                'message' => 'Health Data updated successfully',
+            ]);
+        }
+        return response()->json([
+            'message' => "An error occurred while updating the prescription"
+        ], 500);
     }
 
     /**
@@ -60,6 +76,13 @@ class HealthController extends Controller
      */
     public function destroy(Health $health)
     {
-        //
+        if($health->delete()){
+            return response()->json([
+                'message' => 'Health data deleted successfully',
+            ]);
+        }
+        return response()->json([
+            'message' => "An error occurred while deleting the data"
+        ], 500);
     }
 }

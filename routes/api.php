@@ -4,6 +4,8 @@ use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\DiseaseController;
 use App\Http\Controllers\V1\PrescriptionController;
 use App\Http\Controllers\V1\ProfileController;
+use App\Http\Controllers\V1\HealthController;
+use App\Http\Controllers\V1\RoutineController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +32,10 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
 
     Route::apiResource('prescriptions', PrescriptionController::class);
     Route::get('diseases', [DiseaseController::class, 'index'])->name('diseases.index');
+
+    Route::apiResource('healths', HealthController::class);
+    Route::post('healths', [HealthController::class, 'store'])->name('healths.store');
+    Route::apiResource('routines', RoutineController::class);
 
     Route::get('profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('logout',[AuthController::class,'destroy'])->name('logout');
