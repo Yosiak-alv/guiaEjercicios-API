@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V1;
 
+use App\Http\Controllers\Controller;
 use App\Models\Routine;
 use Illuminate\Http\Request;
 use App\Http\Resources\V1\RoutineResource;
+use App\Http\Requests\RoutineRequest;
 
 class RoutineController extends Controller
 {
@@ -14,7 +16,7 @@ class RoutineController extends Controller
     public function index()
     {
         return RoutineResource::collection(
-            Routine::where('user_id',request()->user()->id) ->orderByRaw('ABS(UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(next_dose))')->get()
+            Routine::where('user_id',request()->user()->id)->get()
         );
     }
 
@@ -29,15 +31,15 @@ class RoutineController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RoutineRequest $request)
     {
         $request->merge(['user_id' => request()->user()->id]);
-        $attributes = $request->validatedHealth();
+        $attributes = $request->validatedRoutine();
         if(Routine::create($attributes)){
             return response()->json([
                 'message' => 'Exercise routine added successfully',
             ]);
-        }               
+        }
         return response()->json([
             'message' => "An error occurred while adding the routine"
         ], 500);
@@ -70,7 +72,7 @@ class RoutineController extends Controller
             return response()->json([
                 'message' => 'Exercise routine updated successfully',
             ]);
-        }               
+        }
         return response()->json([
             'message' => "An error occurred while updating the routine"
         ], 500);

@@ -35,7 +35,9 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
 
     Route::apiResource('healths', HealthController::class);
     Route::post('healths', [HealthController::class, 'store'])->name('healths.store');
+
     Route::apiResource('routines', RoutineController::class);
+    //Route::post('routines', [RoutineController::class, 'store'])->name('routines.store');
 
     Route::get('profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('logout',[AuthController::class,'destroy'])->name('logout');
