@@ -64,10 +64,10 @@ class RoutineController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Routine $routine)
+    public function update(RoutineRequest $request, Routine $routine)
     {
         $request->merge(['user_id' => request()->user()->id]);
-        $attributes = $request->validatedHealth();
+        $attributes = $request->validatedRoutine();
         if($routine->update($attributes)){
             return response()->json([
                 'message' => 'Exercise routine updated successfully',

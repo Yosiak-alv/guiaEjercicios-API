@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Health;
 use Illuminate\Http\Request;
 use App\Http\Resources\V1\HealthResource;
+use App\Http\Requests\HealthRequest;
 
 class HealthController extends Controller
 {
@@ -24,7 +25,7 @@ class HealthController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(HealthRequest $request)
     {
         $request->merge(['user_id' => request()->user()->id]);
         $attributes = $request->validatedHealth();
@@ -43,7 +44,7 @@ class HealthController extends Controller
      */
     public function show(Health $health)
     {
-        return new HealthResource($health->load(['health']));
+        return new HealthResource($health);
     }
 
     /**
@@ -57,7 +58,7 @@ class HealthController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Health $health)
+    public function update(HealthRequest $request, Health $health)
     {
         $request->merge(['user_id' => request()->user()->id]);
         $attributes = $request->validatedHealth();

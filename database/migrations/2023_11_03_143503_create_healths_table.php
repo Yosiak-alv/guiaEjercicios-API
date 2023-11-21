@@ -15,11 +15,11 @@ return new class extends Migration
         Schema::create('healths', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->nullable(false)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->decimal('weight', 5, 2);
-            $table->decimal('height', 5, 2);
-            $table->decimal('bmi', 5, 2);
-            $table->decimal('blood_pressure', 5, 2);
-            $table->decimal('blood_sugar', 5, 2);
+            $table->string('weight');
+            $table->string('height');
+            $table->string('bmi');
+            $table->string('blood_pressure');
+            $table->string('blood_sugar');
             $table->timestamp('date')->nullable();
         });
     }

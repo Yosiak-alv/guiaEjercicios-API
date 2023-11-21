@@ -33,17 +33,18 @@ class HealthRequest extends FormRequest
     {
         return [
             'user_id' => ['exists:users,id','gt:0','numeric'],
-            'weight' => ['required','numeric','gt:0'],
-            'height' => ['required','numeric','gt:0'],
-            'blood_pressure' => ['required','numeric','gt:0'],
-            'blood_sugar' => ['required','numeric','gt:0'],
-            'date' => ['required, date'],
+            'weight' => ['required','string','max:255'],
+            'height' => ['required','string','max:255'],
+            'bmi' => ['required','string','max:255'],
+            'blood_pressure' => ['required','string','max:255'],
+            'blood_sugar' => ['required','string','max:255'],
+            'date' => ['required', 'date'],
         ];
     }
 
     public function validatedHealth(): array
     {
-        return $this->only('weight','height','blood_pressure','blood_sugar','date','user_id');
+        return $this->only('weight','height','blood_pressure','blood_sugar','date','user_id', 'bmi');
     }
 
 }

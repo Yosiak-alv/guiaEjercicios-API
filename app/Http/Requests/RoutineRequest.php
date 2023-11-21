@@ -46,6 +46,6 @@ class RoutineRequest extends FormRequest
 
     public function validatedRoutine(): array
     {
-        return $this->only('routine_name','routine_description','routine_duration','routine_type','recommended_weight','recommended_BMI','recommended_blood_pressure','recommended_blood_sugar');
+        return $this->only('routine_name','routine_description','routine_duration','routine_type','recommended_weight','recommended_BMI','recommended_blood_pressure','recommended_blood_sugar', 'user_id');
     }
 }
