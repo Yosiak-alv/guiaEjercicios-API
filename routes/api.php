@@ -33,8 +33,9 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('prescriptions', PrescriptionController::class);
     Route::get('diseases', [DiseaseController::class, 'index'])->name('diseases.index');
 
-    Route::apiResource('healths', HealthController::class);
-    Route::post('healths', [HealthController::class, 'store'])->name('healths.store');
+    Route::apiResource('health', HealthController::class);
+    Route::post('health', [HealthController::class, 'store'])->name('health.store');
+    Route::get('health', [HealthController::class, 'index'])->name('health.index');
 
     Route::apiResource('routines', RoutineController::class);
     //Route::post('routines', [RoutineController::class, 'store'])->name('routines.store');
